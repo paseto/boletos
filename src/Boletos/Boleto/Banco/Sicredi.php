@@ -13,12 +13,10 @@ class Sicredi extends BancoAbstract
     {
         $this->setCarteira('C');
         $this->setEspecie('R$');
-        $this->setEspecieDocumento('DI');
+        $this->setEspecieDocumento('OS');
         $this->setCodigo('748');
         $this->setDigitoVerificador('X');
-        $this->setNome('Sicredi');
-        $this->setPosto('04');
-        $this->setByte('2');
+        $this->setNome('Sicredi');        
         $this->setAceite('N');
         $this->setLogomarca('logosicredi.jpg');
         $this->setLocalPagamento('Pagável em qualquer Banco até o vencimento');
