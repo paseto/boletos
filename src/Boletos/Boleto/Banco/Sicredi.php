@@ -10,8 +10,7 @@ use Boletos\Boleto\Util\Modulo;
 class Sicredi extends BancoAbstract
 {
     protected function init()
-    {
-        $this->setCarteira('C');
+    {        
         $this->setEspecie('R$');
         $this->setEspecieDocumento('OS');
         $this->setCodigo('748');
