@@ -11,7 +11,11 @@
     }
   ],
   "require": {
-    "php": "~5.5|~7.0"
+    "php": "~5.5|~7.0",
+    "itbz/fpdf": "~1.7",
+    "mpdf/mpdf": "~5",
+    "twig/twig": "~1.0",
+    "picqer/php-barcode-generator": "^0.1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*",
