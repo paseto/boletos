@@ -8,10 +8,13 @@ use Boletos\Boleto\Util\UnidadeMedida;
 
 class GeradorBoleto
 {
-    public function gerar(Boleto $boleto)
+    public function gerar(Boleto $boleto, $PDFClass)
     {
-        $PDF = new FPDF('P', 'mm', 'A4');
-
+        if (!empty($PDFClass)){
+          $PDF = $PDFClass;
+        }else{
+          $PDF = new FPDF('P', 'mm', 'A4');
+        }
         $PDF->AddPage();
 
         $PDF->SetFont('Arial', '', 8);
