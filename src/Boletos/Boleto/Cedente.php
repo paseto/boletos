@@ -52,6 +52,11 @@ class Cedente
     private $dvConta;
 
     /**
+     * @var string Código do Cedente
+     */
+    private $codigoCedente;
+
+    /**
      * @param string $agencia
      */
     public function setAgencia($agencia)
@@ -213,4 +218,16 @@ class Cedente
 
         return $conta.'-'.$dv;
     }
+    
+    function getCodigoCedente()
+    {
+      return $this->codigoCedente;
+    }
+
+    function setCodigoCedente($codigoCedente)
+    {
+      $this->codigoCedente = $codigoCedente;
+    }
+
+
 }
