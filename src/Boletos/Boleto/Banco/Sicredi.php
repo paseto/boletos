@@ -28,7 +28,7 @@ class Sicredi extends BancoAbstract
    */
   public function getDigitoVerificadorNossoNumero(Boleto $boleto)
   {
-    $nnum = $boleto->getCedente()->getAgencia() . $this->getPosto() . $boleto->getCedente()->getConta() . date('y') . $this->getByte() . $boleto->getNossoNumero();
+    $nnum = $boleto->getCedente()->getAgencia() . $this->getPosto() . $boleto->getCedente()->getCodigoCedente() . date('y') . $this->getByte() . $boleto->getNossoNumero();
 
     //dv do nosso número
     return $this->digitoVerificadorNossonumero($nnum);
