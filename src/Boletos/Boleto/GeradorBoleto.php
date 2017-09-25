@@ -89,7 +89,7 @@ class GeradorBoleto
         );
         $PDF->Cell(15, 5, $boleto->getBanco()->getEspecie(), 'BR', 0, 'L');
         $PDF->Cell(20, 5, '001', 'BR', 0, 'L');
-        $PDF->Cell(40, 5, $boleto->getCarteiraENossoNumeroComDigitoVerificador(), 'B', 1, 'R');
+        $PDF->Cell(40, 5, $boleto->getNossoNumeroSemDigitoVerificador().'-'.$boleto->getDigitoVerificadorNossoNumero(), 'B', 1, 'R');
 
         $PDF->SetFont('Arial', '', 6);
         $PDF->Cell(60, 3, utf8_decode('Número do Documento'), 'LR', 0, 'L');
@@ -171,7 +171,7 @@ class GeradorBoleto
         $PDF->Ln(10);
 
         $PDF->Cell(50, 10, '', 'B', 0, 'L');
-        $PDF->Image(Gerador::getDirImages().$boleto->getBanco()->getLogomarca(), 10, 130, 40, 10);
+        $PDF->Image(Gerador::getDirImages().$boleto->getBanco()->getLogomarca(), 10, 125, 40, 10);
         //Select Arial italic 8
         $PDF->SetFont('Arial', 'B', 14);
         $PDF->Cell(20, 10, $boleto->getBanco()->getCodigoComDigitoVerificador(), 'LBR', 0, 'C');

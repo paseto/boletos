@@ -28,6 +28,7 @@ class Sicredi extends BancoAbstract
    */
   public function getDigitoVerificadorNossoNumero(Boleto $boleto)
   {
+    // |Agência | Posto | Cedente | Ano | Byte | Sequencial(Nosso número) | 
     $nnum = $boleto->getCedente()->getAgencia() . $this->getPosto() . $boleto->getCedente()->getCodigoCedente() . date('y') . $this->getByte() . $boleto->getNossoNumero();
 
     //dv do nosso número
@@ -98,7 +99,7 @@ class Sicredi extends BancoAbstract
    * @return int|string
    */
   public function digitoVerificadorNossonumero($numero)
-  {
+  {    
     $resto2 = Modulo::modulo11($numero, 9, 1);
     $digito = 11 - $resto2;
     if ($digito > 9) {
