@@ -1,18 +1,20 @@
 <?php
 require '../vendor/autoload.php';
 
-use Boleto\Banco\Bradesco;
+use Boleto\Banco\BancoDoBrasil;
 use Boleto\Boleto;
+use Boleto\GeradorBoleto;
+use Boleto\Sacado;
 
 
 $oBoleto = new Boleto();
 
-$oBoleto->setBanco(new Bradesco());
+$oBoleto->setBanco(new BancoDoBrasil());
 
 $oBoleto->setNumeroMoeda("9");
-$oBoleto->setDataVencimento(DateTime::createFromFormat('d/m/Y', "07/07/2014"));
-$oBoleto->setDataDocumento(DateTime::createFromFormat('d/m/Y', "10/07/2014"));
-$oBoleto->setDataProcessamento(DateTime::createFromFormat('d/m/Y', "10/07/2014"));
+$oBoleto->setDataVencimento(DateTime::createFromFormat('d/m/Y', "07/07/2020"));
+$oBoleto->setDataDocumento(DateTime::createFromFormat('d/m/Y', "10/07/2020"));
+$oBoleto->setDataProcessamento(DateTime::createFromFormat('d/m/Y', "10/07/2020"));
 $oBoleto->addDemonstrativo('Pagamento de Compra');
 $oBoleto->addInstrucao("- Sr. Caixa, não receber após o vencimento");
 $oBoleto->addInstrucao("- Pedido cancelado após o vencimento");
@@ -34,7 +36,7 @@ $oCedente->setCpfCnpj("128.588.555-13");
 
 $oBoleto->setCedente($oCedente);
 
-$oSacado = new \Boleto\Sacado();
+$oSacado = new Sacado();
 $oSacado->setNome("Vinicius Silva");
 $oSacado->setTipoLogradouro("Rua");
 $oSacado->setEnderecoLogradouro("Bartolomeu da Gama");
@@ -45,6 +47,6 @@ $oSacado->setCep("29980-000");
 
 $oBoleto->setSacado($oSacado);
 
-$oGeradorBoleto = new \Boleto\GeradorBoleto();
+$oGeradorBoleto = new GeradorBoleto();
 $gerar = $oGeradorBoleto->gerar($oBoleto);
 $gerar->Output();

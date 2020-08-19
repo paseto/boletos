@@ -3,7 +3,16 @@
   "description": "Gerador de Boletos PDF",
   "license": "MIT",
   "type": "library",
-  "keywords": ["boleto", "pdf", "sicredi","boleto-pdf","bradesco","itau","caixa"],
+  "keywords": [
+    "boleto",
+    "pdf",
+    "sicredi",
+    "boleto-pdf",
+    "bradesco",
+    "itau",
+    "caixa",
+    "Banco do Brasil"
+  ],
   "authors": [
     {
       "name": "Giovani Paseto",

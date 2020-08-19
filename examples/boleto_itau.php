@@ -10,7 +10,7 @@ $oBoleto->setNumeroMoeda("9");
 $oBoleto->setDataVencimento(DateTime::createFromFormat('d/m/Y', "10/11/2017"));
 $oBoleto->setDataDocumento(DateTime::createFromFormat('d/m/Y', "03/02/2019"));
 $oBoleto->setDataProcessamento(DateTime::createFromFormat('d/m/Y', "03/02/2019"));
-$oBoleto->addDemonstrativo('Pagamento de Compra na Móveis Simonetti');
+$oBoleto->addDemonstrativo('Pagamento de Compra');
 $oBoleto->addInstrucao("- Condominio Edificio Morada do Parque - Bloco A - APT° 101 - ref 10/2017");
 $oBoleto->addInstrucao("- Multa de 2.00% após 11/11/2017");
 $oBoleto->addInstrucao("- Juros de 1.00% ao mês");

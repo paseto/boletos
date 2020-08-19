@@ -7,6 +7,17 @@
 
 Gera boletos em PDF padrão CNAB 400.
 
+|Bancos|Versão|
+|---|:---:|
+|Banco do Brasil|Teste|
+|Banrisul|Teste|
+|Bradesco |Teste|
+|Caixa|Teste|
+|Itaú|Teste|
+|Sicredi|Estável|
+
+
+
 ### Setup
 
 ```sh
