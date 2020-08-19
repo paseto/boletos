@@ -1,8 +1,9 @@
 {
   "name": "paseto/boletos",
   "description": "Gerador de Boletos PDF",
+  "licence": "MIT",
   "type": "library",
-  "keywords": ["boleto", "pdf", "sicredi"],
+  "keywords": ["boleto", "pdf", "sicredi","boleto-pdf","bradesco","itau","caixa"],
   "authors": [
     {
       "name": "Giovani Paseto",

@@ -1,16 +1,16 @@
 # Gerador de Boletos PDF
 
-[![Build Status](https://travis-ci.org/paseto/boleto-sicredi.svg?branch=master)](https://travis-ci.org/paseto/boleto-sicredi)
-[![Latest Stable Version](https://poser.pugx.org/paseto/boleto-sicredi/v/stable)](https://packagist.org/packages/paseto/boleto-sicredi)
-[![Total Downloads](https://poser.pugx.org/paseto/boleto-sicredi/downloads)](https://packagist.org/packages/paseto/boleto-sicredi)
-![](https://img.shields.io/github/license/paseto/boleto-sicredi.svg)
+[![Build Status](https://travis-ci.org/paseto/boletos.svg?branch=master)](https://travis-ci.org/paseto/boletos)
+[![Latest Stable Version](https://poser.pugx.org/paseto/boletos/v/stable)](https://packagist.org/packages/paseto/boletos)
+[![Total Downloads](https://poser.pugx.org/paseto/boletos/downloads)](https://packagist.org/packages/paseto/boletos)
+![](https://img.shields.io/github/license/paseto/boleto.svg)
 
 Gera boletos em PDF padrão CNAB 400.
 
 ### Setup
 
 ```sh
-$ composer require paseto/boleto-sicredi
+$ composer require paseto/boletos
 ```
 
 ### Usage
