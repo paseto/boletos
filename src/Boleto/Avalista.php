@@ -1,6 +1,6 @@
 <?php
 
-namespace Boletos\Boleto;
+namespace Boleto;
 
 /**
  * Class Avalista.

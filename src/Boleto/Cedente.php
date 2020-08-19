@@ -1,8 +1,8 @@
 <?php
 
-namespace Boletos\Boleto;
+namespace Boleto;
 
-use Boletos\Boleto\Util\Numero;
+use Boleto\Util\Numero;
 
 class Cedente
 {
@@ -219,15 +219,13 @@ class Cedente
         return $conta.'-'.$dv;
     }
     
-    function getCodigoCedente()
+    public function getCodigoCedente()
     {
-      return $this->codigoCedente;
+        return $this->codigoCedente;
     }
 
-    function setCodigoCedente($codigoCedente)
+    public function setCodigoCedente($codigoCedente)
     {
-      $this->codigoCedente = $codigoCedente;
+        $this->codigoCedente = $codigoCedente;
     }
-
-
 }

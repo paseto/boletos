@@ -1,6 +1,6 @@
 <?php
 
-namespace Boletos\Boleto\Util;
+namespace Boleto\Util;
 
 /**
  *   Autor:

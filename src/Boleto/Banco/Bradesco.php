@@ -1,33 +1,32 @@
 <?php
 
-namespace Boletos\Boleto\Banco;
+namespace Boleto\Banco;
 
-use Boletos\Boleto\Banco as BancoAbstract;
-use Boletos\Boleto\Boleto;
-use Boletos\Boleto\Util\Numero;
-use Boletos\Boleto\Util\Modulo;
+use Boleto\Banco as BancoAbstract;
+use Boleto\Boleto;
+use Boleto\Util\Numero;
+use Boleto\Util\Modulo;
 
 class Bradesco extends BancoAbstract
 {
     protected function init()
     {
-        $this->setCarteira('26');
-        $this->setEspecie('R$');
-        $this->setEspecieDocumento('DS');
-        $this->setCodigo('237');
-        $this->setNome('Bradesco');
-        $this->setLogomarca('logobradesco.jpg');
-        $this->setLocalPagamento('Pagável em qualquer Banco até o vencimento');
+        $this->setCarteira("25");
+        $this->setEspecie("R$");
+        $this->setEspecieDocumento("DS");
+        $this->setCodigo("237");
+        $this->setNome("Bradesco");
+        $this->setLogomarca("logobradesco.jpg");
+        $this->setLocalPagamento("Pagável em qualquer Banco até o vencimento");
     }
 
     /**
      * @param Boleto $boleto
-     *
      * @return int|string
      */
     public function getNossoNumeroComDigitoVerificador(Boleto $boleto)
     {
-        $nnum = Numero::formataNumero($this->getCarteira(), 2, 0).Numero::formataNumero(
+        $nnum = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
                 $boleto->getNossoNumero(),
                 11,
                 0
@@ -39,12 +38,11 @@ class Bradesco extends BancoAbstract
 
     /**
      * @param Boleto $boleto
-     *
      * @return string
      */
     public function getNossoNumeroSemDigitoVerificador(Boleto $boleto)
     {
-        return Numero::formataNumero($this->getCarteira(), 2, 0).Numero::formataNumero(
+        return Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
             $boleto->getNossoNumero(),
             11,
             0
@@ -53,39 +51,37 @@ class Bradesco extends BancoAbstract
 
     /**
      * @param Boleto $boleto
-     *
      * @return string
      */
     public function getCarteiraENossoNumeroComDigitoVerificador(Boleto $boleto)
     {
-        $num = Numero::formataNumero($this->getCarteira(), 2, 0).Numero::formataNumero(
+        $num = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
                 $boleto->getNossoNumero(),
                 11,
                 0
             );
 
-        return substr($num, 0, 2).'/'.substr($num, 2).'-'.$boleto->digitoVerificadorNossonumero($num);
+        return substr($num, 0, 2) . '/' . substr($num, 2) . '-' . $boleto->digitoVerificadorNossonumero($num);
     }
 
     /**
      * @param Boleto $boleto
-     *
      * @return string
      */
     public function getDigitoVerificadorCodigoBarras(Boleto $boleto)
     {
-        $nnum = Numero::formataNumero($this->getCarteira(), 2, 0).Numero::formataNumero(
+        $nnum = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
                 $boleto->getNossoNumero(),
                 11,
                 0
             );
 
-        $numero = $this->getCodigo().$boleto->getNumeroMoeda().$boleto->getFatorVencimento(
-            ).$boleto->getValorBoletoSemVirgula().$boleto->getCedente()->getAgencia().$nnum.Numero::formataNumero(
+        $numero = $this->getCodigo() . $boleto->getNumeroMoeda() . $boleto->getFatorVencimento(
+            ) . $boleto->getValorBoletoSemVirgula() . $boleto->getCedente()->getAgencia() . $nnum . Numero::formataNumero(
                 $boleto->getCedente()->getConta(),
                 7,
                 0
-            ).'0';
+            ) . '0';
 
         $resto2 = Modulo::modulo11($numero, 9, 1);
         if ($resto2 == 0 || $resto2 == 1 || $resto2 == 10) {
@@ -99,7 +95,6 @@ class Bradesco extends BancoAbstract
 
     /**
      * @param $numero
-     *
      * @return int|string
      */
     public function digitoVerificadorNossonumero($numero)
@@ -107,32 +102,31 @@ class Bradesco extends BancoAbstract
         $resto2 = Modulo::modulo11($numero, 7, 1);
         $digito = 11 - $resto2;
         if ($digito == 10) {
-            $dv = 'P';
+            $dv = "P";
         } elseif ($digito == 11) {
             $dv = 0;
         } else {
             $dv = $digito;
         }
-
         return $dv;
     }
 
     /**
      * @param Boleto $boleto
-     *
      * @return string
      */
     public function getLinha(Boleto $boleto)
     {
         return
-            $this->getCodigo().
-            $boleto->getNumeroMoeda().
-            $boleto->getDigitoVerificadorCodigoBarras().
-            $boleto->getFatorVencimento().
-            $boleto->getValorBoletoSemVirgula().
-            $boleto->getCedente()->getAgencia().
-            $boleto->getNossoNumeroSemDigitoVerificador().
-            Numero::formataNumero($boleto->getCedente()->getConta(), 7, 0).
-            '0';
+            $this->getCodigo() .
+            $boleto->getNumeroMoeda() .
+            $boleto->getDigitoVerificadorCodigoBarras() .
+            $boleto->getFatorVencimento() .
+            $boleto->getValorBoletoSemVirgula() .
+            $boleto->getCedente()->getAgencia() .
+            $boleto->getNossoNumeroSemDigitoVerificador() .
+            Numero::formataNumero($boleto->getCedente()->getConta(), 7, 0) .
+            "0";
     }
+
 }

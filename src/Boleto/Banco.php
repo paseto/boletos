@@ -1,8 +1,8 @@
 <?php
 
-namespace Boletos\Boleto;
+namespace Boleto;
 
-use Boletos\Boleto\Util\Modulo;
+use Boleto\Util\Modulo;
 
 abstract class Banco
 {
@@ -74,6 +74,11 @@ abstract class Banco
      * @var string
      */
     private $byte;
+
+    /**
+     * @var string
+     */
+    private $nossoNumero;
 
     public function __construct()
     {
@@ -317,7 +322,18 @@ abstract class Banco
     {
         $this->byte = $byte;
     }
+    
+    public function getNossoNumero()
+    {
+        return $this->nossoNumero;
+    }
 
+    public function setNossoNumero($nossoNumero)
+    {
+        $this->nossoNumero = $nossoNumero;
+    }
+
+    
     /**
      * @param Boleto $boleto
      *

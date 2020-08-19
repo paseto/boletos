@@ -1,19 +1,19 @@
 <?php
-
-namespace Boletos\Boleto;
+namespace Boleto;
 
 use fpdf\FPDF;
-use Boletos\Boleto\Util\Substr;
-use Boletos\Boleto\Util\UnidadeMedida;
+use Boleto\Util\Substr;
+use Boleto\Util\UnidadeMedida;
 
 class GeradorBoleto
 {
-    public function gerar(Boleto $boleto, $PDFClass)
+
+    public function gerar(Boleto $boleto, $PDFClass = null)
     {
-        if (!empty($PDFClass)){
-          $PDF = $PDFClass;
-        }else{
-          $PDF = new FPDF('P', 'mm', 'A4');
+        if (!empty($PDFClass)) {
+            $PDF = $PDFClass;
+        } else {
+            $PDF = new FPDF('P', 'mm', 'A4');
         }
         $PDF->AddPage();
 
@@ -27,9 +27,8 @@ class GeradorBoleto
         $PDF->Cell(
             190,
             4,
-            utf8_decode(
-                'Imprimir em impressora jato de tinta (ink jet) ou laser em qualidade normal. (Não use modo econômico).'
-            ),
+            utf8_decode('Imprimir em impressora jato de tinta (ink jet) ou laser em qualidade normal.'
+                .' (Não use modo econômico).'),
             '',
             1,
             'C'
@@ -50,7 +49,8 @@ class GeradorBoleto
         $PDF->Cell(
             190,
             2,
-            '--------------------------------------------------------------------------------------------------------------------------------------',
+            '---------------------------------------------------------------------------------------------------------'
+            .'-----------------------------',
             '',
             0,
             'L'
@@ -62,7 +62,7 @@ class GeradorBoleto
         $PDF->SetFont('Arial', '', 9);
 
         $PDF->Cell(50, 10, '', 'B', 0, 'L');
-        $PDF->Image(Gerador::getDirImages().$boleto->getBanco()->getLogomarca(), 10, 43, 40, 10);
+        $PDF->Image(Gerador::getDirImages() . $boleto->getBanco()->getLogomarca(), 10, 43, 40, 10);
         //Select Arial italic 8
         $PDF->SetFont('Arial', 'B', 14);
         $PDF->Cell(20, 10, $boleto->getBanco()->getCodigoComDigitoVerificador(), 'LBR', 0, 'C');
@@ -78,18 +78,19 @@ class GeradorBoleto
         $PDF->Cell(40, 3, utf8_decode('Carteira/Nosso número'), '', 1, 'L');
 
         $PDF->SetFont('Arial', '', 7);
-        $PDF->Cell(85, 5, utf8_decode($boleto->getSacado()->getNome()), 'BLR', 0, 'L');
+        $PDF->Cell(85, 5, utf8_decode($boleto->getCedente()->getNome()), 'BLR', 0, 'L');
         $PDF->Cell(
             30,
             5,
-            $boleto->getCedente()->getAgenciaComDv().' / '.$boleto->getCedente()->getContaComDv(),
+            $boleto->getCedente()->getAgencia() . '.' . $boleto->getBanco()->getPosto() . '.'
+            . sprintf('%05d', $boleto->getCedente()->getConta()),
             'BR',
             0,
             'L'
         );
         $PDF->Cell(15, 5, $boleto->getBanco()->getEspecie(), 'BR', 0, 'L');
         $PDF->Cell(20, 5, '001', 'BR', 0, 'L');
-        $PDF->Cell(40, 5, $boleto->getNossoNumeroSemDigitoVerificador().'-'.$boleto->getDigitoVerificadorNossoNumero(), 'B', 1, 'R');
+        $PDF->Cell(40, 5, $boleto->getBanco()->getNossoNumero(), 'B', 1, 'R');
 
         $PDF->SetFont('Arial', '', 6);
         $PDF->Cell(60, 3, utf8_decode('Número do Documento'), 'LR', 0, 'L');
@@ -126,8 +127,8 @@ class GeradorBoleto
             190,
             5,
             utf8_decode(
-                $boleto->getSacado()->getTipoLogradouro().' '.$boleto->getSacado()->getEnderecoLogradouro(
-                ).', '.$boleto->getSacado()->getNumeroLogradouro()
+                $boleto->getSacado()->getTipoLogradouro() . ' ' . $boleto->getSacado()->getEnderecoLogradouro(
+                ) . ', ' . $boleto->getSacado()->getNumeroLogradouro()
             ),
             'L',
             1,
@@ -137,8 +138,8 @@ class GeradorBoleto
             190,
             5,
             utf8_decode(
-                $boleto->getSacado()->getCidade().' - '.$boleto->getSacado()->getUf(
-                ).' - CEP: '.$boleto->getSacado()->getCep()
+                $boleto->getSacado()->getCidade() . ' - ' . $boleto->getSacado()->getUf(
+                ) . ' - CEP: ' . $boleto->getSacado()->getCep()
             ),
             'BL',
             1,
@@ -146,13 +147,13 @@ class GeradorBoleto
         );
 
         $PDF->SetFont('Arial', '', 6);
-        $PDF->Cell(170, 3, utf8_decode('Instruções'), '', 0, 'L');
+        $PDF->Cell(170, 3, utf8_decode('Informações'), '', 0, 'L');
         $PDF->Cell(20, 3, utf8_decode('Autênticação Mecânica'), '', 1, 'R');
 
         $PDF->SetFont('Arial', '', 7);
 
-        foreach ($boleto->getInstrucoes() as $instrucao) {
-            $PDF->Cell(190, 5, utf8_decode($instrucao), '', 1, 'L');
+        foreach ($boleto->getDemonstrativos() as $demonstrativo) {
+            $PDF->Cell(190, 5, utf8_decode($demonstrativo), '', 1, 'L');
         }
 
         $PDF->Ln();
@@ -162,7 +163,8 @@ class GeradorBoleto
         $PDF->Cell(
             190,
             2,
-            '--------------------------------------------------------------------------------------------------------------------------------------',
+            '---------------------------------------------------------------------------------------------------------'
+            .'-----------------------------',
             '',
             0,
             'L'
@@ -171,7 +173,7 @@ class GeradorBoleto
         $PDF->Ln(10);
 
         $PDF->Cell(50, 10, '', 'B', 0, 'L');
-        $PDF->Image(Gerador::getDirImages().$boleto->getBanco()->getLogomarca(), 10, 125, 40, 10);
+        $PDF->Image(Gerador::getDirImages() . $boleto->getBanco()->getLogomarca(), 10, 125, 40, 10);
         //Select Arial italic 8
         $PDF->SetFont('Arial', 'B', 14);
         $PDF->Cell(20, 10, $boleto->getBanco()->getCodigoComDigitoVerificador(), 'LBR', 0, 'C');
@@ -196,7 +198,8 @@ class GeradorBoleto
         $PDF->Cell(
             60,
             5,
-            $boleto->getCedente()->getAgenciaComDv().' / '.$boleto->getCedente()->getContaComDv(),
+            $boleto->getCedente()->getAgencia() . '.' . $boleto->getBanco()->getPosto() . '.'
+            . sprintf('%05d', $boleto->getCedente()->getConta()),
             'B',
             1,
             'R'
@@ -212,11 +215,11 @@ class GeradorBoleto
 
         $PDF->SetFont('Arial', '', 7);
         $PDF->Cell(28, 5, $boleto->getDataDocumento()->format('d/m/Y'), 'BLR', 0, 'L');
-        $PDF->Cell(40, 5, $boleto->getNumeroDocumento(), 'BR', 0, 'L');
+        $PDF->Cell(40, 5, $boleto->getNossoNumero(), 'BR', 0, 'L');
         $PDF->Cell(20, 5, $boleto->getBanco()->getEspecieDocumento(), 'BR', 0, 'L');
         $PDF->Cell(20, 5, '', 'BR', 0, 'L');
         $PDF->Cell(22, 5, $boleto->getDataProcessamento()->format('d/m/Y'), 'BR', 0, 'L');
-        $PDF->Cell(60, 5, $boleto->getCarteiraENossoNumeroComDigitoVerificador(), 'B', 1, 'R');
+        $PDF->Cell(60, 5, $boleto->getBanco()->getNossoNumero(), 'B', 1, 'R');
 
         $PDF->SetFont('Arial', '', 6);
         $PDF->Cell(28, 3, 'Uso do Banco', 'LR', 0, 'L');
@@ -288,8 +291,8 @@ class GeradorBoleto
             190,
             5,
             utf8_decode(
-                $boleto->getSacado()->getTipoLogradouro().' '.$boleto->getSacado()->getEnderecoLogradouro(
-                ).', '.$boleto->getSacado()->getNumeroLogradouro()
+                $boleto->getSacado()->getTipoLogradouro() . ' ' . $boleto->getSacado()->getEnderecoLogradouro(
+                ) . ', ' . $boleto->getSacado()->getNumeroLogradouro()
             ),
             'L',
             1,
@@ -299,8 +302,8 @@ class GeradorBoleto
             190,
             5,
             utf8_decode(
-                $boleto->getSacado()->getCidade().' - '.$boleto->getSacado()->getUf(
-                ).' - CEP: '.$boleto->getSacado()->getCep()
+                $boleto->getSacado()->getCidade() . ' - ' . $boleto->getSacado()->getUf(
+                ) . ' - CEP: ' . $boleto->getSacado()->getCep()
             ),
             'BL',
             1,
@@ -321,7 +324,8 @@ class GeradorBoleto
         $PDF->Cell(
             190,
             2,
-            '--------------------------------------------------------------------------------------------------------------------------------------',
+            '--------------------------------------------------------------------------------------------------------'
+            .'------------------------------',
             '',
             0,
             'L'
@@ -333,8 +337,8 @@ class GeradorBoleto
     public function fbarcode($valor, FPDF $PDF)
     {
         $fino = UnidadeMedida::px2milimetros(1); // valores em px
-        $largo = UnidadeMedida::px2milimetros(2.3); // valor em px
-        $altura = UnidadeMedida::px2milimetros(40); // valor em px
+        $largo = UnidadeMedida::px2milimetros(3); // valor em px
+        $altura = UnidadeMedida::px2milimetros(45); // valor em px
 
         $barcodes[0] = '00110';
         $barcodes[1] = '10001';
@@ -351,25 +355,25 @@ class GeradorBoleto
                 $f = ($f1 * 10) + $f2;
                 $texto = '';
                 for ($i = 1; $i < 6; ++$i) {
-                    $texto .= substr($barcodes[$f1], ($i - 1), 1).substr($barcodes[$f2], ($i - 1), 1);
+                    $texto .= substr($barcodes[$f1], ($i - 1), 1) . substr($barcodes[$f2], ($i - 1), 1);
                 }
                 $barcodes[$f] = $texto;
             }
         }
 
         // Guarda inicial
-        $PDF->Image(Gerador::getDirImages().'/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
-        $PDF->Image(Gerador::getDirImages().'/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
-        $PDF->Image(Gerador::getDirImages().'/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
-        $PDF->Image(Gerador::getDirImages().'/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
 
         $texto = $valor;
         if ((strlen($texto) % 2) != 0) {
-            $texto = '0'.$texto;
+            $texto = '0' . $texto;
         }
 
         // Draw dos dados
@@ -384,7 +388,7 @@ class GeradorBoleto
                     $f1 = $largo;
                 }
 
-                $PDF->Image(Gerador::getDirImages().'/p.png', $PDF->GetX(), $PDF->GetY(), $f1, $altura);
+                $PDF->Image(Gerador::getDirImages() . '/p.png', $PDF->GetX(), $PDF->GetY(), $f1, $altura);
                 $PDF->SetX($PDF->GetX() + $f1);
 
                 if (substr($f, $i, 1) == '0') {
@@ -393,25 +397,26 @@ class GeradorBoleto
                     $f2 = $largo;
                 }
 
-                $PDF->Image(Gerador::getDirImages().'/b.png', $PDF->GetX(), $PDF->GetY(), $f2, $altura);
+                $PDF->Image(Gerador::getDirImages() . '/b.png', $PDF->GetX(), $PDF->GetY(), $f2, $altura);
                 $PDF->SetX($PDF->GetX() + $f2);
             }
         }
 
         // Draw guarda final
-        $PDF->Image(Gerador::getDirImages().'/p.png', $PDF->GetX(), $PDF->GetY(), $largo, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/p.png', $PDF->GetX(), $PDF->GetY(), $largo, $altura);
         $PDF->SetX($PDF->GetX() + $largo);
-        $PDF->Image(Gerador::getDirImages().'/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/b.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
-        $PDF->Image(Gerador::getDirImages().'/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
+        $PDF->Image(Gerador::getDirImages() . '/p.png', $PDF->GetX(), $PDF->GetY(), $fino, $altura);
         $PDF->SetX($PDF->GetX() + $fino);
         $PDF->Image(
-            Gerador::getDirImages().'/b.png',
+            Gerador::getDirImages() . '/b.png',
             $PDF->GetX(),
             $PDF->GetY(),
             UnidadeMedida::px2milimetros(1),
             $altura
         );
         $PDF->SetX($PDF->GetX() + UnidadeMedida::px2milimetros(1));
-    } //Fim da função
+    }
+//Fim da função
 }

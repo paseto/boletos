@@ -1,10 +1,10 @@
 <?php
 
-namespace Boletos\Boleto;
+namespace Boleto;
 
-use Boletos\Boleto\Util\Modulo;
-use Boletos\Boleto\Util\Data;
-use Boletos\Boleto\Util\Numero;
+use Boleto\Util\Modulo;
+use Boleto\Util\Data;
+use Boleto\Util\Numero;
 
 class Boleto
 {
@@ -34,15 +34,15 @@ class Boleto
      */
     private $numeroDocumento;
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $dataVencimento;
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $dataDocumento;
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $dataProcessamento;
     /**
@@ -152,7 +152,7 @@ class Boleto
         $this->demonstrativos = $demonstrativos;
     }
 
-    public function addDemostrativo($demonstrativo)
+    public function addDemonstrativo($demonstrativo)
     {
         $this->demonstrativos[] = $demonstrativo;
     }
@@ -298,7 +298,7 @@ class Boleto
         $mes = $data[1];
         $dia = $data[0];
 
-        return abs((Data::_dateToDays('1997', '10', '07')) - (Data::_dateToDays($ano, $mes, $dia)));
+        return abs((Data::dateToDays('1997', '10', '07')) - (Data::dateToDays($ano, $mes, $dia)));
     }
 
     /**
