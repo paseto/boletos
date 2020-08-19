@@ -17,7 +17,8 @@ class Itau extends Banco
         $this->setNome("Itau");
         $this->setAceite("N");
         $this->setLogomarca("logoitau.jpg");
-        $this->setLocalPagamento("Até o vencimento, pague preferencialmente no Itaú. Após o vencimento pague somente no Itaú");
+        $this->setLocalPagamento("Até o vencimento, pague preferencialmente no Itaú. 
+        Após o vencimento pague somente no Itaú");
     }
 
     /**
@@ -46,7 +47,9 @@ class Itau extends Banco
     {
         $nossoNumero = $this->getCarteira() . '/' . $boleto->getNossoNumero();
 
-        return $nossoNumero . '-' . Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() . $this->getCarteira() . $boleto->getNossoNumero());
+        return $nossoNumero . '-' .
+               Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() .
+                                $this->getCarteira() . $boleto->getNossoNumero());
     }
 
     /**
@@ -55,18 +58,19 @@ class Itau extends Banco
      */
     public function getDigitoVerificadorCodigoBarras(Boleto $boleto)
     {
-        $numero =
-            $this->getCodigo() .
-            $boleto->getNumeroMoeda() .
-            $boleto->getFatorVencimento() .
-            $boleto->getValorBoletoSemVirgula() .
-            $this->getCarteira() .
-            $boleto->getNossoNumero() .
-            Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() . $this->getCarteira() . $boleto->getNossoNumero()) .
-            $boleto->getCedente()->getAgencia() .
-            $boleto->getCedente()->getConta() .
-            Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta()) .
-            "000";
+        $numero
+            = $this->getCodigo() .
+              $boleto->getNumeroMoeda() .
+              $boleto->getFatorVencimento() .
+              $boleto->getValorBoletoSemVirgula() .
+              $this->getCarteira() .
+              $boleto->getNossoNumero() .
+              Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() .
+                               $this->getCarteira() . $boleto->getNossoNumero()) .
+              $boleto->getCedente()->getAgencia() .
+              $boleto->getCedente()->getConta() .
+              Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta()) .
+              "000";
 
         return $this->tratarRestoDigitoVerificadorGeral(Modulo::modulo11($numero, 9, 1));
     }
@@ -84,7 +88,7 @@ class Itau extends Banco
      * @param Boleto $boleto
      * @return string
      */
-    function getLinha(Boleto $boleto)
+    public function getLinha(Boleto $boleto)
     {
         return
             $this->getCodigo() .
@@ -94,7 +98,8 @@ class Itau extends Banco
             $boleto->getValorBoletoSemVirgula() .
             $this->getCarteira() .
             $boleto->getNossoNumero() .
-            Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() . $this->getCarteira() . $boleto->getNossoNumero()) .
+            Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta() .
+                             $this->getCarteira() . $boleto->getNossoNumero()) .
             $boleto->getCedente()->getAgencia() .
             $boleto->getCedente()->getConta() .
             Modulo::modulo10($boleto->getCedente()->getAgencia() . $boleto->getCedente()->getConta()) .
@@ -108,13 +113,12 @@ class Itau extends Banco
     public function getCampoLivre(Boleto $boleto)
     {
         return $boleto->getCedente()->getConta() .
-            $boleto->getCedente()->getDvConta() .
-            substr($this->getNossoNumeroSemDigitoVerificador($boleto), 2, 3) .
-            $this->getCarteiraModalidade() .
-            substr($this->getNossoNumeroSemDigitoVerificador($boleto), 5, 3) .
-            $this->getTipoImpressao() .
-            substr($this->getNossoNumeroSemDigitoVerificador($boleto), 8, 9);
-
+               $boleto->getCedente()->getDvConta() .
+               substr($this->getNossoNumeroSemDigitoVerificador($boleto), 2, 3) .
+               $this->getCarteiraModalidade() .
+               substr($this->getNossoNumeroSemDigitoVerificador($boleto), 5, 3) .
+               $this->getTipoImpressao() .
+               substr($this->getNossoNumeroSemDigitoVerificador($boleto), 8, 9);
     }
 
     /**

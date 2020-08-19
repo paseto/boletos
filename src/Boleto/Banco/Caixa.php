@@ -48,8 +48,8 @@ class Caixa extends Banco
         $nossoNumero = $this->getCarteiraModalidade() . $this->getTipoImpressao() . '/' . $boleto->getNossoNumero();
 
         return $nossoNumero . '-' . $this->tratarRestoDigitoVerificadorNossoNumeroCampoLivre(
-                Modulo::modulo11($boleto->getNossoNumeroSemDigitoVerificador(), 9, 1)
-            );
+            Modulo::modulo11($boleto->getNossoNumeroSemDigitoVerificador(), 9, 1)
+        );
     }
 
     /**
@@ -82,7 +82,7 @@ class Caixa extends Banco
      * @param Boleto $boleto
      * @return string
      */
-    function getLinha(Boleto $boleto)
+    public function getLinha(Boleto $boleto)
     {
         return
             $this->getCodigo() .
@@ -107,7 +107,6 @@ class Caixa extends Banco
                substr($this->getNossoNumeroSemDigitoVerificador($boleto), 5, 3) .
                $this->getTipoImpressao() .
                substr($this->getNossoNumeroSemDigitoVerificador($boleto), 8, 9);
-
     }
 
     /**

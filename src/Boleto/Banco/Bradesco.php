@@ -27,10 +27,10 @@ class Bradesco extends BancoAbstract
     public function getNossoNumeroComDigitoVerificador(Boleto $boleto)
     {
         $nnum = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
-                $boleto->getNossoNumero(),
-                11,
-                0
-            );
+            $boleto->getNossoNumero(),
+            11,
+            0
+        );
 
         //dv do nosso número
         return $boleto->digitoVerificadorNossonumero($nnum);
@@ -56,10 +56,10 @@ class Bradesco extends BancoAbstract
     public function getCarteiraENossoNumeroComDigitoVerificador(Boleto $boleto)
     {
         $num = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
-                $boleto->getNossoNumero(),
-                11,
-                0
-            );
+            $boleto->getNossoNumero(),
+            11,
+            0
+        );
 
         return substr($num, 0, 2) . '/' . substr($num, 2) . '-' . $boleto->digitoVerificadorNossonumero($num);
     }
@@ -71,17 +71,17 @@ class Bradesco extends BancoAbstract
     public function getDigitoVerificadorCodigoBarras(Boleto $boleto)
     {
         $nnum = Numero::formataNumero($this->getCarteira(), 2, 0) . Numero::formataNumero(
-                $boleto->getNossoNumero(),
-                11,
-                0
-            );
+            $boleto->getNossoNumero(),
+            11,
+            0
+        );
 
         $numero = $this->getCodigo() . $boleto->getNumeroMoeda() . $boleto->getFatorVencimento(
-            ) . $boleto->getValorBoletoSemVirgula() . $boleto->getCedente()->getAgencia() . $nnum . Numero::formataNumero(
-                $boleto->getCedente()->getConta(),
-                7,
-                0
-            ) . '0';
+        ) . $boleto->getValorBoletoSemVirgula() . $boleto->getCedente()->getAgencia() . $nnum . Numero::formataNumero(
+            $boleto->getCedente()->getConta(),
+            7,
+            0
+        ) . '0';
 
         $resto2 = Modulo::modulo11($numero, 9, 1);
         if ($resto2 == 0 || $resto2 == 1 || $resto2 == 10) {
@@ -128,5 +128,4 @@ class Bradesco extends BancoAbstract
             Numero::formataNumero($boleto->getCedente()->getConta(), 7, 0) .
             "0";
     }
-
 }
